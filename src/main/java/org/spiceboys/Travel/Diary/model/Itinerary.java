@@ -70,8 +70,8 @@ public class Itinerary {
         return isPrivate;
     }
 
-    public void setPrivate(Boolean aPrivate) {
-        isPrivate = aPrivate;
+    public void setPrivate(Boolean isPrivate) {
+        isPrivate = this.isPrivate;
     }
 
     public Date getModifiedAt() {
