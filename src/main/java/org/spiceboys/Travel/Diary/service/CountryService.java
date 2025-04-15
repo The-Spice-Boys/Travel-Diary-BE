@@ -17,4 +17,13 @@ public class CountryService {
     public Country createCountry(Country country){
         return countryRepository.save(country);
     }
+
+    public Country getCountryByCountryName(String countryName){
+        Optional<Country> countryOptional = countryRepository.findCountryByCountryName(countryName);
+        if (countryOptional.isPresent()){
+            return countryOptional.get();
+        }else{
+            throw new RuntimeException("Country does not exist");
+        }
+    }
 }

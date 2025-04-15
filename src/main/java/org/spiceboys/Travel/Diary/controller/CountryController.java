@@ -2,6 +2,7 @@ package org.spiceboys.Travel.Diary.controller;
 
 import org.spiceboys.Travel.Diary.service.CountryService;
 import org.spiceboys.Travel.Diary.model.Country;
+import org.spiceboys.Travel.Diary.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,4 +24,11 @@ public class CountryController {
         Country createdCountry = countryService.createCountry(country);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCountry);
     }
+
+    @GetMapping("/country-name/{countryName}")
+    public ResponseEntity<Country> fetchCountryByCountryName(@PathVariable String countryName){
+        Country fetchedCountry = countryService.getCountryByCountryName(countryName);
+        return ResponseEntity.status(HttpStatus.OK).body(fetchedCountry);
+    }
+
 }
