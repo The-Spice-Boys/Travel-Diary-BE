@@ -1,16 +1,17 @@
 package org.spiceboys.Travel.Diary.model;
 
 import jakarta.persistence.*;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import org.spiceboys.Travel.Diary.model.Itinerary;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name="users")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
@@ -30,6 +31,9 @@ public class User {
     @Email
     @NotBlank
     private String email;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Itinerary> itineraries = new ArrayList<>();
 
     private String bio;
 
@@ -123,5 +127,12 @@ public class User {
 
     public void setPrivate(Boolean isPrivate) {
         this.isPrivate = isPrivate;
+    }
+
+    public List<Itinerary> getItineraries() {
+        return itineraries;
+    }
+    public void setItineraries(List<Itinerary> itineraries) {
+        this.itineraries = itineraries;
     }
 }
