@@ -1,5 +1,6 @@
 package org.spiceboys.Travel.Diary.controller;
 
+import org.spiceboys.Travel.Diary.dto.UserDTO;
 import org.spiceboys.Travel.Diary.service.UserService;
 import org.spiceboys.Travel.Diary.model.User;
 import org.springframework.http.HttpStatus;
@@ -19,8 +20,16 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<UserDTO> createUser(@RequestBody User user) {
         User createdUser = userService.createUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+        UserDTO createdUserDTO = new UserDTO(createdUser.getUserId(), createdUser.getUsername());
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDTO);
+    }
+
+    @GetMapping("/username/{username}")
+    public ResponseEntity<UserDTO> fetchUserByUsername(@PathVariable String username) {
+        User fetchedUser = userService.getUserByUsername(username);
+        UserDTO fetchedUserDTO = new UserDTO(fetchedUser.getUserId(), fetchedUser.getUsername());
+        return ResponseEntity.status(HttpStatus.OK).body(fetchedUserDTO);
     }
 }

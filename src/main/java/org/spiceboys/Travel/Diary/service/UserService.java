@@ -17,4 +17,13 @@ public class UserService {
     public User createUser(User user) {
         return userRepository.save(user);
     }
+
+    public User getUserByUsername(String username) {
+        Optional<User> userOptional = userRepository.findUserByUsername(username);
+        if (userOptional.isPresent()) {
+            return userOptional.get();
+        } else {
+            throw new RuntimeException("User not found");
+        }
+    }
 }
