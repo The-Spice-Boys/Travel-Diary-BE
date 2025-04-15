@@ -1,5 +1,6 @@
 package org.spiceboys.Travel.Diary.service;
 
+import org.spiceboys.Travel.Diary.exception.ContentNotFoundException;
 import org.spiceboys.Travel.Diary.model.User;
 import org.spiceboys.Travel.Diary.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class UserService {
         if (userOptional.isPresent()) {
             return userOptional.get();
         } else {
-            throw new RuntimeException("User not found");
+      throw new ContentNotFoundException("User not found");
         }
     }
 }

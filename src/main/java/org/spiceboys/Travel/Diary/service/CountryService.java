@@ -1,5 +1,6 @@
 package org.spiceboys.Travel.Diary.service;
 
+import org.spiceboys.Travel.Diary.exception.ContentNotFoundException;
 import org.spiceboys.Travel.Diary.model.Country;
 import org.spiceboys.Travel.Diary.repository.CountryRepository;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class CountryService {
         if (countryOptional.isPresent()){
             return countryOptional.get();
         }else{
-            throw new RuntimeException("Country does not exist");
+      throw new ContentNotFoundException("Country does not exist");
         }
     }
 }
