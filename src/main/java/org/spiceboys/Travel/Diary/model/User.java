@@ -35,7 +35,6 @@ public class User {
 
     private String profilePicUrl;
 
-    @NotNull
     private Boolean isPrivate;
 
     public User() {
