@@ -27,4 +27,14 @@ public class UserService {
       throw new ContentNotFoundException("User not found");
         }
     }
+
+//    public User updateUserByUsername(String username, User user) {
+//        Optional<User> userOptional = userRepository.findUserByUsername(username);
+//        if (userOptional.isPresent()) {
+//            userOptional.get();
+//        } else {
+//            throw new ContentNotFoundException("User not found");
+//        }
+//    }
 }
+
