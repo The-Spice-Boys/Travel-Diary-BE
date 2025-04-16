@@ -1,26 +1,25 @@
 package org.spiceboys.Travel.Diary.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.URL;
 import org.spiceboys.Travel.Diary.model.Itinerary;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(unique=true)
+    @Column(unique = true)
     private String username;
-
-    @NotBlank
-    private String password;
 
     @NotBlank
     private String firstName;
@@ -32,29 +31,45 @@ public class User {
     @NotBlank
     private String email;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Itinerary> itineraries = new ArrayList<>();
+    @NotBlank
+    private String password;
 
     private String bio;
 
+    @URL
     private String profilePicUrl;
 
     private Boolean isPrivate;
+
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JsonManagedReference
+    private List<Itinerary> itineraries;
+
+    @OneToMany(
+            mappedBy = "user"
+    )
+    @JsonManagedReference
+    private List<Favourite> favourites;
 
     public User() {
 
     }
 
-    public User(Long userId, String username, String password, String firstName, String lastName, String email, String bio, String profilePicUrl, Boolean isPrivate) {
-        this.userId = userId;
+    public User(String username, String firstName, String lastName, String email, String password, String bio, String profilePicUrl, Boolean isPrivate) {
         this.username = username;
-        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
         this.bio = bio;
         this.profilePicUrl = profilePicUrl;
         this.isPrivate = isPrivate;
+        this.itineraries = new ArrayList<>();
+        this.favourites = new ArrayList<>();
     }
 
     public Long getUserId() {
@@ -132,6 +147,7 @@ public class User {
     public List<Itinerary> getItineraries() {
         return itineraries;
     }
+
     public void setItineraries(List<Itinerary> itineraries) {
         this.itineraries = itineraries;
     }
