@@ -1,7 +1,10 @@
 package org.spiceboys.Travel.Diary.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.URL;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,18 +22,21 @@ public class Country {
     @NotBlank
     private String description;
 
+    @URL
     @NotBlank
     private String countryPicUrl;
 
-    public Country() {
+    @OneToMany(mappedBy = "country")
+    @JsonManagedReference
+    private List<Itinerary> itineraries;
 
-    }
+    public Country() {}
 
-    public Country(String countryName, Integer countryId, String description, String countryPicUrl) {
+    public Country(String countryName, String description, String countryPicUrl) {
         this.countryName = countryName;
-        this.countryId = countryId;
         this.description = description;
         this.countryPicUrl = countryPicUrl;
+        this.itineraries = new ArrayList<>();
     }
 
     public Integer getCountryId() {
@@ -63,5 +69,13 @@ public class Country {
 
     public void setCountryPicUrl(String countryPicUrl) {
         this.countryPicUrl = countryPicUrl;
+    }
+
+    public List<Itinerary> getItineraries() {
+        return itineraries;
+    }
+
+    public void setItineraries(List<Itinerary> itineraries) {
+        this.itineraries = itineraries;
     }
 }
