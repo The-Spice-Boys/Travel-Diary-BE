@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -21,14 +22,14 @@ public class Note {
     private String text;
 
     @NotBlank
-    private Date modifiedAt;
+    private LocalDateTime modifiedAt;
 
     public Note() {}
 
     public Note(Activity activity, String text, Date modifiedAt) {
         this.activity = activity;
         this.text = text;
-        this.modifiedAt = modifiedAt;
+        this.modifiedAt = LocalDateTime.now();
     }
 
     public Long getNoteId() {
