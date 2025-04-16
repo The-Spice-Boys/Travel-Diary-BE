@@ -26,7 +26,7 @@ public class Note {
 
     public Note() {}
 
-    public Note(Activity activity, String text, Date modifiedAt) {
+    public Note(Activity activity, String text) {
         this.activity = activity;
         this.text = text;
         this.modifiedAt = LocalDateTime.now();
