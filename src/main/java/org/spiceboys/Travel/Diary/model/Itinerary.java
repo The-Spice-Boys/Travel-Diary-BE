@@ -30,19 +30,20 @@ public class Itinerary {
     @JoinColumn(
             name = "user_id"
     )
-    @JsonBackReference
+    @JsonBackReference(value="user-itineraries")
     private User user;
 
     @ManyToOne
     @JoinColumn(
             name = "country_id"
     )
+    @JsonBackReference(value="country-itineraries")
     private Country country;
 
     @OneToMany(
             mappedBy = "itinerary"
     )
-    @JsonManagedReference
+    @JsonManagedReference(value="itinerary-activities")
     private List<Activity> activities;
 
 

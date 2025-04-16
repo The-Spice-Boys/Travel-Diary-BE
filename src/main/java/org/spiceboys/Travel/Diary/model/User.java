@@ -46,13 +46,15 @@ public class User {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JsonManagedReference
+    @JsonManagedReference(value="user-itineraries")
     private List<Itinerary> itineraries;
-
+//
     @OneToMany(
-            mappedBy = "user"
+            mappedBy = "user",
+    cascade = CascadeType.ALL,
+    orphanRemoval = true
     )
-    @JsonManagedReference
+    @JsonManagedReference(value="user-favourites")
     private List<Favourite> favourites;
 
     public User() {

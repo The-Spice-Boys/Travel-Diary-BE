@@ -17,7 +17,7 @@ public class Photo {
 
     @ManyToOne
     @JoinColumn(name = "activity_id")
-    @JsonBackReference
+    @JsonBackReference(value="activity-photos")
     private Activity activity;
 
     private String caption;

@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="activities")
@@ -18,10 +19,8 @@ public class Activity {
 
 
     @ManyToOne
-    @JoinColumn(
-            name = "itineraryId"
-    )
-    @JsonBackReference
+    @JoinColumn(name = "itinerary_id")
+    @JsonBackReference(value="itinerary-activities")
     public  Itinerary itinerary;
 
     @NotBlank
@@ -29,16 +28,12 @@ public class Activity {
 
     private Boolean completeStatus;
 
-    @OneToMany(
-            mappedBy = "activities"
-    )
-    @JsonManagedReference
+    @OneToMany(mappedBy = "activity")
+    @JsonManagedReference(value="activity-notes")
     private List<Note> notes;
 
-    @OneToMany(
-            mappedBy = "activities"
-    )
-    @JsonManagedReference
+    @OneToMany(mappedBy = "activity")
+    @JsonManagedReference(value="activity-photos")
     private List<Photo> photos;
 
     public Activity() {}
@@ -60,11 +55,7 @@ public class Activity {
     }
 
     public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+        return activityId;
     }
 
     public String getTitle() {

@@ -27,7 +27,7 @@ public class Country {
     private String countryPicUrl;
 
     @OneToMany(mappedBy = "country")
-    @JsonManagedReference
+    @JsonManagedReference(value="country-itineraries")
     private List<Itinerary> itineraries;
 
     public Country() {}

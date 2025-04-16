@@ -18,10 +18,10 @@ public class Favourite {
     @JoinColumn(
             name = "userId"
     )
-    @JsonBackReference
+    @JsonBackReference(value="user-favourites")
     private User user;
 
-    public Favourite(User user, Itinerary itinerary) { /
+    public Favourite(User user, Itinerary itinerary) {
         this.user = user;
         this.itinerary = itinerary;
     }

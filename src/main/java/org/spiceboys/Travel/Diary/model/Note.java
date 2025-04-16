@@ -16,7 +16,7 @@ public class Note {
 
     @ManyToOne
     @JoinColumn(name="activity_id")
-    @JsonBackReference
+    @JsonBackReference(value="activity-notes")
     private Activity activity;
 
     private String text;
