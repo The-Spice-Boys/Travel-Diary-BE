@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class FavouriteController {
     private final FavouriteService favouriteService;
@@ -15,9 +17,12 @@ public class FavouriteController {
         this.favouriteService = favouriteService;
     }
 
-    // GET /api/users/user_id/{userId}/favourites
-
-    // POST /api/favourites
+    @GetMapping("/api/users/username/{username}/favourites")
+    public ResponseEntity<List<Favourite>> getFavouritesByUsername(@PathVariable String username) {
+        List<Favourite> favourites = favouriteService.getFavouritesByUsername(username);
+        return ResponseEntity.status(HttpStatus.OK).body(favourites);
+    }
+    
     @PostMapping("/api/favourites")
     public ResponseEntity<Favourite> saveFavourite(@RequestBody Favourite favourite) {
         Favourite savedFavourite = favouriteService.saveFavourite(favourite);
