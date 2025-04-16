@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.URL;
 import org.spiceboys.Travel.Diary.model.Itinerary;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,7 @@ public class User {
 
     private String bio;
 
+    @URL
     private String profilePicUrl;
 
     private Boolean isPrivate;
