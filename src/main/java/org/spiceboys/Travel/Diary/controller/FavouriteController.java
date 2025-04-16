@@ -13,7 +13,7 @@ import java.util.List;
 public class FavouriteController {
     private final FavouriteService favouriteService;
 
-    public FavouriteController(FavouriteService favouriteService, UserService userService) {
+    public FavouriteController(FavouriteService favouriteService) {
         this.favouriteService = favouriteService;
     }
 
@@ -22,7 +22,7 @@ public class FavouriteController {
         List<Favourite> favourites = favouriteService.getFavouritesByUsername(username);
         return ResponseEntity.status(HttpStatus.OK).body(favourites);
     }
-    
+
     @PostMapping("/api/favourites")
     public ResponseEntity<Favourite> saveFavourite(@RequestBody Favourite favourite) {
         Favourite savedFavourite = favouriteService.saveFavourite(favourite);
