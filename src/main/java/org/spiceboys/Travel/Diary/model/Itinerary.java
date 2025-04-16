@@ -1,45 +1,61 @@
 package org.spiceboys.Travel.Diary.model;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name="itineraries")
+@Table(name = "itineraries")
 public class Itinerary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long itineraryId;
 
-    @ManyToOne
-    @JoinColumn(name="user_id")
-    private User  user;
-
-    @ManyToOne
-    @JoinColumn(name="country_id")
-    private Country country;
+    @NotBlank
+    private String itineraryTitle;
 
     @NotNull
     private Boolean isPrivate;
 
     @NotBlank
-    private Date modifiedAt;
+    private LocalDateTime modifiedAt;
 
-    @NotBlank
-    private String itineraryTitle;
+    @ManyToOne
+    @JoinColumn(
+            name = "user_id"
+    )
+    @JsonBackReference
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(
+            name = "country_id"
+    )
+    private Country country;
+
+    @OneToMany(
+            mappedBy = "itinerary"
+    )
+    @JsonManagedReference
+    private List<Activity> activities;
+
 
     public Itinerary() {
     }
 
-    public Itinerary(Long itineraryId, String itineraryTitle, User user, Country country, Boolean isPrivate, Date modifiedAt) {
-        this.itineraryId = itineraryId;
+    public Itinerary(String itineraryTitle, Boolean isPrivate, User user, Country country) {
         this.itineraryTitle = itineraryTitle;
+        this.isPrivate = isPrivate;
         this.user = user;
         this.country = country;
-        this.isPrivate = isPrivate;
-        this.modifiedAt = modifiedAt;
+        this.modifiedAt = LocalDateTime.now();
+        this.activities = new ArrayList<>();
     }
 
     public Long getItineraryId() {
@@ -74,11 +90,19 @@ public class Itinerary {
         isPrivate = this.isPrivate;
     }
 
-    public Date getModifiedAt() {
+    public List<Activity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(List<Activity> activities) {
+        this.activities = activities;
+    }
+
+    public LocalDateTime getModifiedAt() {
         return modifiedAt;
     }
 
-    public void setModifiedAt(Date modifiedAt) {
+    public void setModifiedAt(LocalDateTime modifiedAt) {
         this.modifiedAt = modifiedAt;
     }
 
