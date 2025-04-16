@@ -31,12 +31,12 @@ public class Note {
         this.modifiedAt = modifiedAt;
     }
 
-    public Activity getActivity() {
-        return activity;
+    public Long getNoteId() {
+        return noteId;
     }
 
-    public void setActivity(Activity activity) {
-        this.activity = activity;
+    public Activity getActivity() {
+        return activity;
     }
 
     public String getText() {
