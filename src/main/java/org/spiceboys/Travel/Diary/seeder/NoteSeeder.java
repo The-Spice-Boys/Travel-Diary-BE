@@ -15,7 +15,7 @@ import java.io.InputStream;
 import java.util.Optional;
 
 @Component
-@Order(4)
+@Order(6)
 class NoteSeeder implements CommandLineRunner {
     private final NoteRepository noteRepository;
 
@@ -32,9 +32,9 @@ class NoteSeeder implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         if (noteRepository.count() == 0) {
-            InputStream resourceAsStream = this.getClass().getResourceAsStream("/data/notes.json");
-            if (resourceAsStream != null) {
-                List<Note> notes = objectMapper.readValue(resourceAsStream, new TypeReference<List<Note>>(){});
+            InputStream inputStream = this.getClass().getResourceAsStream("/data/notes.json");
+            if (inputStream != null) {
+                List<Note> notes = objectMapper.readValue(inputStream, new TypeReference<List<Note>>(){});
                 for (Note note : notes) {
                     Long activityId = note.getActivity().getActivityId();
                     Optional<Activity> activity = activityRepository.findById(activityId);

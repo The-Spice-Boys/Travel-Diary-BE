@@ -36,9 +36,9 @@ class ActivitySeeder implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         if (activityRepository.count() == 0) {
-            InputStream resourceAsStream = this.getClass().getResourceAsStream("/data/activities.json");
-            if (resourceAsStream != null) {
-                List<Activity> activities = objectMapper.readValue(resourceAsStream, new TypeReference<List<Activity>>(){});
+            InputStream inputStream = this.getClass().getResourceAsStream("/data/activities.json");
+            if (inputStream != null) {
+                List<Activity> activities = objectMapper.readValue(inputStream, new TypeReference<List<Activity>>(){});
                 for (Activity activity : activities) {
                     Long itineraryId = activity.getItinerary().getItineraryId();
                     Optional<Itinerary> itinerary = itineraryRepository.findById(itineraryId);
