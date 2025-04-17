@@ -24,7 +24,7 @@ public class Activity {
     public  Itinerary itinerary;
 
     @NotBlank
-    private String title;
+    private String itineraryTitle;
 
     private Boolean completeStatus;
 
@@ -38,8 +38,8 @@ public class Activity {
 
     public Activity() {}
 
-    public Activity(String title, Boolean completeStatus, Itinerary itinerary) {
-        this.title = title;
+    public Activity(String itineraryTitle, Boolean completeStatus, Itinerary itinerary) {
+        this.itineraryTitle = itineraryTitle;
         this.completeStatus = completeStatus;
         this.itinerary = itinerary;
         this.notes = new ArrayList<>();
@@ -58,12 +58,12 @@ public class Activity {
         return activityId;
     }
 
-    public String getTitle() {
-        return title;
+    public String getItineraryTitle() {
+        return itineraryTitle;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setItineraryTitle(String itineraryTitle) {
+        this.itineraryTitle = itineraryTitle;
     }
 
     public Boolean getCompleteStatus() {
