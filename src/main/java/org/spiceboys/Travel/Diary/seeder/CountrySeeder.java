@@ -3,14 +3,16 @@ package org.spiceboys.Travel.Diary.seeder;
 import org.spiceboys.Travel.Diary.model.Country;
 import org.spiceboys.Travel.Diary.repository.CountryRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DataSeeder implements CommandLineRunner {
+@Order(1)
+public class CountrySeeder implements CommandLineRunner {
 
     private final CountryRepository countryRepository;
 
-    public DataSeeder(CountryRepository countryRepository) {
+    public CountrySeeder(CountryRepository countryRepository) {
         this.countryRepository = countryRepository;
     }
 
