@@ -1,7 +1,6 @@
 package org.spiceboys.Travel.Diary.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -15,7 +14,7 @@ public class Activity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer activityId;
+    private Long activityId;
 
 
     @ManyToOne
@@ -54,7 +53,7 @@ public class Activity {
         this.itinerary = itinerary;
     }
 
-    public Integer getId() {
+    public Long getActivityId() {
         return activityId;
     }
 
