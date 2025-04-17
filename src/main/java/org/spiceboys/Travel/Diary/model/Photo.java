@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
 
 import javax.annotation.processing.Generated;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,17 +25,17 @@ public class Photo {
 
     @URL
     @NotBlank
-    private String url;
+    private String imgUrl;
 
-    private LocalDateTime modifiedAt;
+    private Instant modifiedAt;
 
     public Photo() {}
 
-    public Photo(Activity activity, String caption, String url) {
+    public Photo(Activity activity, String caption, String imgUrl, Instant modifiedAt) {
         this.activity = activity;
         this.caption = caption;
-        this.url = url;
-        this.modifiedAt = LocalDateTime.now();
+        this.imgUrl = imgUrl;
+        this.modifiedAt = modifiedAt;
     }
 
     public Long getPhotoId() {
@@ -49,23 +50,27 @@ public class Photo {
         return caption;
     }
 
-    public String getUrl() {
-        return url;
+    public String getImgUrl() {
+        return imgUrl;
     }
 
-    public LocalDateTime getModifiedAt() {
+    public Instant getModifiedAt() {
         return modifiedAt;
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
     }
 
     public void setCaption(String caption) {
         this.caption = caption;
     }
 
-    public void setModifiedAt(LocalDateTime modifiedAt) {
+    public void setModifiedAt(Instant modifiedAt) {
         this.modifiedAt = modifiedAt;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 }
