@@ -2,8 +2,9 @@ package org.spiceboys.Travel.Diary.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -21,15 +22,15 @@ public class Note {
 
     private String text;
 
-    @NotBlank
-    private LocalDateTime modifiedAt;
+    @NotNull
+    private Instant modifiedAt;
 
     public Note() {}
 
-    public Note(Activity activity, String text) {
+    public Note(Activity activity, String text, Instant modifiedAt) {
         this.activity = activity;
         this.text = text;
-        this.modifiedAt = LocalDateTime.now();
+        this.modifiedAt = modifiedAt;
     }
 
     public Long getNoteId() {
@@ -40,6 +41,10 @@ public class Note {
         return activity;
     }
 
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
+
     public String getText() {
         return text;
     }
@@ -48,11 +53,11 @@ public class Note {
         this.text = text;
     }
 
-    public LocalDateTime getModifiedAt() {
+    public Instant getModifiedAt() {
         return modifiedAt;
     }
 
-    public void setModifiedAt(LocalDateTime modifiedAt) {
+    public void setModifiedAt(Instant modifiedAt) {
         this.modifiedAt = modifiedAt;
     }
 }
