@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,8 +24,8 @@ public class Itinerary {
     @NotNull
     private Boolean isPrivate;
 
-    @NotBlank
-    private LocalDateTime modifiedAt;
+    @NotNull
+    private Instant modifiedAt;
 
     @ManyToOne
     @JoinColumn(
@@ -50,12 +51,12 @@ public class Itinerary {
     public Itinerary() {
     }
 
-    public Itinerary(String itineraryTitle, Boolean isPrivate, User user, Country country) {
+    public Itinerary(String itineraryTitle, Boolean isPrivate, User user, Country country, Instant modifiedAt) {
         this.itineraryTitle = itineraryTitle;
         this.isPrivate = isPrivate;
         this.user = user;
         this.country = country;
-        this.modifiedAt = LocalDateTime.now();
+        this.modifiedAt = modifiedAt;
         this.activities = new ArrayList<>();
     }
 
@@ -99,11 +100,11 @@ public class Itinerary {
         this.activities = activities;
     }
 
-    public LocalDateTime getModifiedAt() {
+    public Instant getModifiedAt() {
         return modifiedAt;
     }
 
-    public void setModifiedAt(LocalDateTime modifiedAt) {
+    public void setModifiedAt(Instant modifiedAt) {
         this.modifiedAt = modifiedAt;
     }
 
