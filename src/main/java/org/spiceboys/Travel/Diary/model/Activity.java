@@ -25,7 +25,7 @@ public class Activity {
     @NotBlank
     private String itineraryTitle;
 
-    private Boolean completeStatus;
+    private Boolean completionStatus;
 
     @OneToMany(mappedBy = "activity")
     @JsonManagedReference(value="activity-notes")
@@ -37,9 +37,9 @@ public class Activity {
 
     public Activity() {}
 
-    public Activity(String itineraryTitle, Boolean completeStatus, Itinerary itinerary) {
+    public Activity(String itineraryTitle, Boolean completionStatus, Itinerary itinerary) {
         this.itineraryTitle = itineraryTitle;
-        this.completeStatus = completeStatus;
+        this.completionStatus = completionStatus;
         this.itinerary = itinerary;
         this.notes = new ArrayList<>();
         this.photos = new ArrayList<>();
@@ -65,12 +65,12 @@ public class Activity {
         this.itineraryTitle = itineraryTitle;
     }
 
-    public Boolean getCompleteStatus() {
-        return completeStatus;
+    public Boolean getCompletionStatus() {
+        return completionStatus;
     }
 
-    public void setCompleteStatus(Boolean completeStatus) {
-        this.completeStatus = completeStatus;
+    public void setCompletionStatus(Boolean completionStatus) {
+        this.completionStatus = completionStatus;
     }
 
     public List<Note> getNotes() {
