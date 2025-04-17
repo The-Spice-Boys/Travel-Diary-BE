@@ -45,6 +45,11 @@ public class Itinerary {
     @JsonManagedReference(value="itinerary-activities")
     private List<Activity> activities;
 
+    @OneToMany(
+            mappedBy = "itinerary"
+    )
+    private List<Favourite> favourites;
+
 
     public Itinerary() {
     }
@@ -56,6 +61,7 @@ public class Itinerary {
         this.country = country;
         this.modifiedAt = modifiedAt;
         this.activities = new ArrayList<>();
+        this.favourites = new ArrayList<>();
     }
 
     public Long getItineraryId() {
@@ -112,6 +118,14 @@ public class Itinerary {
 
     public void setItineraryTitle(String itineraryTitle) {
         this.itineraryTitle = itineraryTitle;
+    }
+
+    public List<Favourite> getFavourites() {
+        return favourites;
+    }
+
+    public void setFavourites(List<Favourite> favourites) {
+        this.favourites = favourites;
     }
 }
 

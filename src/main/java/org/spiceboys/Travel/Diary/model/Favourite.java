@@ -3,6 +3,8 @@ package org.spiceboys.Travel.Diary.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "favourites")
 public class Favourite {
@@ -11,13 +13,12 @@ public class Favourite {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer favouriteId;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "itinerary_id")
     private Itinerary itinerary;
 
     @ManyToOne
-    @JoinColumn(
-            name = "userId"
-    )
+    @JoinColumn(name = "user_id")
     @JsonBackReference(value="user-favourites")
     private User user;
 
