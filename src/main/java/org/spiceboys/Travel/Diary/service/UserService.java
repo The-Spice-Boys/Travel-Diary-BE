@@ -21,11 +21,22 @@ public class UserService {
 
     public User getUserByUsername(String username) {
         Optional<User> userOptional = userRepository.findUserByUsername(username);
-        if (userOptional.isPresent()) {
-            return userOptional.get();
-        } else {
-      throw new ContentNotFoundException("User not found");
+
+        if (userOptional.isEmpty()) {
+            throw new ContentNotFoundException("User not found");
         }
+
+        return userOptional.get();
+    }
+
+    public User getUserByUserId(Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if (userOptional.isEmpty()) {
+            throw new ContentNotFoundException("User not found");
+        }
+
+        return userOptional.get();
     }
 
 //    public User updateUserByUsername(String username, User user) {
