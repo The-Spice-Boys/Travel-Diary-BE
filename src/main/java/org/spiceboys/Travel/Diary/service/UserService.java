@@ -38,13 +38,16 @@ public class UserService {
 
         User user = userOptional.get();
         return user.getIsPrivate()
-                ? new PrivateUserDTO(true)
+                ? new PrivateUserDTO(
+                        user.getUserId(),
+                        user.getUsername(),
+                        true)
                 : new PublicUserDTO(
-                user.getUserId(),
-                user.getUsername(),
-                user.getBio(),
-                user.getProfilePicUrl(),
-                user.getIsPrivate());
+                        user.getUserId(),
+                        user.getUsername(),
+                        user.getBio(),
+                        user.getProfilePicUrl(),
+                        user.getIsPrivate());
     }
 
 //    public User updateUserByUsername(String username, User user) {
