@@ -1,8 +1,6 @@
 package org.spiceboys.Travel.Diary.dto;
 
 public class PublicUserDTO extends UserDTO {
-    private Long userId;
-    private String username;
     private String bio;
     private String profilePicUrl;
 
@@ -16,22 +14,6 @@ public class PublicUserDTO extends UserDTO {
         this.bio = bio;
         this.profilePicUrl = profilePicUrl;
         this.isPrivate = isPrivate;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getBio() {
