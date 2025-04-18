@@ -1,10 +1,12 @@
 package org.spiceboys.Travel.Diary.service;
 
+import org.spiceboys.Travel.Diary.dto.PrivateUserDTO;
+import org.spiceboys.Travel.Diary.dto.PublicUserDTO;
+import org.spiceboys.Travel.Diary.dto.UserDTO;
 import org.spiceboys.Travel.Diary.exception.ContentNotFoundException;
 import org.spiceboys.Travel.Diary.model.User;
 import org.spiceboys.Travel.Diary.repository.UserRepository;
 import org.springframework.stereotype.Service;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,24 +21,30 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User getUserByUsername(String username) {
+    public UserDTO getUserByUsername(String username) {
         Optional<User> userOptional = userRepository.findUserByUsername(username);
-
-        if (userOptional.isEmpty()) {
-            throw new ContentNotFoundException("User not found");
-        }
-
-        return userOptional.get();
+        return createUserDTO(userOptional);
     }
 
-    public User getUserByUserId(Long userId) {
+    public UserDTO getUserByUserId(Long userId) {
         Optional<User> userOptional = userRepository.findById(userId);
+        return createUserDTO(userOptional);
+    }
 
+    private UserDTO createUserDTO(Optional<User> userOptional) {
         if (userOptional.isEmpty()) {
             throw new ContentNotFoundException("User not found");
         }
 
-        return userOptional.get();
+        User user = userOptional.get();
+        return user.getIsPrivate()
+                ? new PrivateUserDTO(true)
+                : new PublicUserDTO(
+                user.getUserId(),
+                user.getUsername(),
+                user.getBio(),
+                user.getProfilePicUrl(),
+                user.getIsPrivate());
     }
 
 //    public User updateUserByUsername(String username, User user) {

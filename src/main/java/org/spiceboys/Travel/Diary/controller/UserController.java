@@ -1,6 +1,5 @@
 package org.spiceboys.Travel.Diary.controller;
 
-import org.spiceboys.Travel.Diary.dto.PrivateUserDTO;
 import org.spiceboys.Travel.Diary.dto.UserDTO;
 import org.spiceboys.Travel.Diary.dto.PublicUserDTO;
 import org.spiceboys.Travel.Diary.service.UserService;
@@ -34,25 +33,14 @@ public class UserController {
 
     @GetMapping("/username/{username}")
     public ResponseEntity<UserDTO> fetchUserByUsername(@PathVariable String username) {
-        User fetchedUser = userService.getUserByUsername(username);
-        return createUserDTOResponse(fetchedUser);
+        UserDTO fetchedUser = userService.getUserByUsername(username);
+        return ResponseEntity.status(HttpStatus.OK).body(fetchedUser);
     }
 
     @GetMapping("/userId/{userId}")
     public ResponseEntity<UserDTO> fetchUserByUserId(@PathVariable Long userId) {
-        User fetchedUser = userService.getUserByUserId(userId);
-        return createUserDTOResponse(fetchedUser);
+        UserDTO fetchedUser = userService.getUserByUserId(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(fetchedUser);
     }
 
-    private ResponseEntity<UserDTO> createUserDTOResponse(User user) {
-        UserDTO userDTO = user.getIsPrivate()
-                ? new PrivateUserDTO(true)
-                : new PublicUserDTO(
-                user.getUserId(),
-                user.getUsername(),
-                user.getBio(),
-                user.getProfilePicUrl(),
-                user.getIsPrivate());
-        return ResponseEntity.status(HttpStatus.OK).body(userDTO);
-    }
 }
