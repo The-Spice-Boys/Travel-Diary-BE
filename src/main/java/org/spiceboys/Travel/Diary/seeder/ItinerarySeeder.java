@@ -54,5 +54,4 @@ public class ItinerarySeeder implements CommandLineRunner {
             System.out.println("ℹ Database already seeded");
         }
     }
-
 }
