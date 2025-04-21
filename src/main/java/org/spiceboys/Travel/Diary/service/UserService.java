@@ -15,15 +15,20 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-
     public UserDTO getUserByUsername(String username) {
         Optional<User> userOptional = userRepository.findUserByUsername(username);
         User user = checkUserExists(userOptional);
         return createUserDTO(user);
     }
 
-    public UserDTO updateUser(String username, PatchUserDTO patchUserDTO) {
-        Optional<User> userOptional = userRepository.findUserByUsername(username);
+    public UserDTO getUserByUserId(Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        User user = checkUserExists(userOptional);
+        return createUserDTO(user);
+    }
+
+    public UserDTO updateUser(Long userId, PatchUserDTO patchUserDTO) {
+        Optional<User> userOptional = userRepository.findById(userId);
         User originalUser = checkUserExists(userOptional);
 
         if (patchUserDTO.getUsername() != null) {
@@ -95,5 +100,6 @@ public class UserService {
                 user.getEmail()
         );
     }
+
 }
 

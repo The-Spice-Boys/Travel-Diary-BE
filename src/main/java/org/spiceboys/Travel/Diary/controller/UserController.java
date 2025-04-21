@@ -22,9 +22,15 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(fetchedUser);
     }
 
-    @PatchMapping("/username/{username}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable String username, @RequestBody PatchUserDTO patchUserDTO) {
-        UserDTO updatedUser = userService.updateUser(username, patchUserDTO);
+    @GetMapping("/userId/{userId}")
+    public ResponseEntity<UserDTO> fetchUserByUserId(@PathVariable Long userId) {
+        UserDTO fetchedUser = userService.getUserByUserId(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(fetchedUser);
+    }
+
+    @PatchMapping("/userId/{userId}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long userId, @RequestBody PatchUserDTO patchUserDTO) {
+        UserDTO updatedUser = userService.updateUser(userId, patchUserDTO);
         return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
     }
 }
