@@ -40,13 +40,17 @@ public class Itinerary {
     private Country country;
 
     @OneToMany(
-            mappedBy = "itinerary"
+            mappedBy = "itinerary",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
     @JsonManagedReference(value="itinerary-activities")
     private List<Activity> activities;
 
     @OneToMany(
-            mappedBy = "itinerary"
+            mappedBy = "itinerary",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
     private List<Favourite> favourites;
 

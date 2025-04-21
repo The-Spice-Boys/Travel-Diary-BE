@@ -18,27 +18,35 @@ public class Activity {
 
 
     @ManyToOne
-    @JoinColumn(name = "itinerary_id")
+    @JoinColumn(name = "itinerary_id", nullable = false)
     @JsonBackReference(value="itinerary-activities")
     public  Itinerary itinerary;
 
     @NotBlank
-    private String itineraryTitle;
+    private String title;
 
     private Boolean completionStatus;
 
-    @OneToMany(mappedBy = "activity")
+    @OneToMany(
+            mappedBy = "activity",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     @JsonManagedReference(value="activity-notes")
     private List<Note> notes;
 
-    @OneToMany(mappedBy = "activity")
+    @OneToMany(
+            mappedBy = "activity",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     @JsonManagedReference(value="activity-photos")
     private List<Photo> photos;
 
     public Activity() {}
 
-    public Activity(String itineraryTitle, Boolean completionStatus, Itinerary itinerary) {
-        this.itineraryTitle = itineraryTitle;
+    public Activity(String title, Boolean completionStatus, Itinerary itinerary) {
+        this.title = title;
         this.completionStatus = completionStatus;
         this.itinerary = itinerary;
         this.notes = new ArrayList<>();
@@ -57,12 +65,12 @@ public class Activity {
         return activityId;
     }
 
-    public String getItineraryTitle() {
-        return itineraryTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setItineraryTitle(String itineraryTitle) {
-        this.itineraryTitle = itineraryTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Boolean getCompletionStatus() {
