@@ -5,6 +5,14 @@ public class UserDTO {
     String username;
     Boolean isPrivate;
 
+    public UserDTO(Long userId,
+                   String username,
+                   Boolean isPrivate) {
+        this.userId = userId;
+        this.username = username;
+        this.isPrivate = isPrivate;
+    }
+
     public Long getUserId() {
         return userId;
     }

@@ -9,11 +9,9 @@ public class PublicUserDTO extends UserDTO {
                          String bio,
                          String profilePicUrl,
                          Boolean isPrivate) {
-        this.userId = userId;
-        this.username = username;
+        super(userId, username, isPrivate);
         this.bio = bio;
         this.profilePicUrl = profilePicUrl;
-        this.isPrivate = isPrivate;
     }
 
     public String getBio() {

@@ -60,9 +60,12 @@ public class UserTests {
                         "{\"private\": true}"));
 
         /*
-        If logged-in user is requesting their own data, ALWAYS returns a JSON with the following properties:
+        If logged-in user is requesting their own data, returns a JSON with the following properties:
             -- userId
             -- username
+            -- firstName
+            -- lastName
+            -- email
             -- bio
             -- profilePicUrl
             -- private
@@ -112,9 +115,12 @@ public class UserTests {
                         "{\"private\": true}"));
 
         /*
-        If logged-in user is requesting their own data, ALWAYS returns a JSON with the following properties:
+        If logged-in user is requesting their own data, returns a JSON with the following properties:
             -- userId
             -- username
+            -- firstName
+            -- lastName
+            -- email
             -- bio
             -- profilePicUrl
             -- private
@@ -163,11 +169,34 @@ public class UserTests {
     }
 
     @Test
-    public void updatePublicUserInfo() throws Exception {}
+    public void updateUserUsername() throws Exception {
+        /*
+        Updates the user's username and returns a JSON object with the following properties:
+            -- userId
+            -- username
+            -- firstName
+            -- lastName
+            -- email
+            -- bio
+            -- profilePicUrl
+            -- private
+        */
+        this.mockMvc
+                .perform(patch("/api/users/userId/1")
+                .contentType("application/json")
+                .content("{\"username\": \"Joe's new username\"}")
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(
+                        "{\"userId\": 1, " +
+                                "\"username\": \"Joe's new username\", " +
+                                "\"firstName\": \"Joe\", " +
+                                "\"lastName\": \"Smith\", " +
+                                "\"email\": \"joe@example.com\", " +
+                                "\"bio\": \"World explorer and coffee lover.\", " +
+                                "\"profilePicUrl\": \"https://picsum.photos/seed/picsum/200/300\", " +
+                                "\"private\": false}"));
 
-    @Test
-    public void updatePrivateUserInfo() throws Exception {}
-
-    @Test
-    public void updateUserPassword() throws Exception {}
+    }
 }
