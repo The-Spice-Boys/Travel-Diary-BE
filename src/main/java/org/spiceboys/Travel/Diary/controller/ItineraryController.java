@@ -75,8 +75,6 @@ public class ItineraryController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Itinerary not found");
         }
     }
-
-
 }
 
 

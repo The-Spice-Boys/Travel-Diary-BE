@@ -18,7 +18,7 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(ItineraryNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleItineraryNotFoundException(ItineraryNotFoundException ex) {
         Map<String, Object> body = new HashMap<>();
         body.put("status", HttpStatus.NOT_FOUND.value());
