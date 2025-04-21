@@ -23,7 +23,8 @@ public class UserService {
     }
 
     public UserDTO updateUser(String username, PatchUserDTO patchUserDTO) {
-        User originalUser = userRepository.findUserByUsername(username).orElseThrow();
+        Optional<User> userOptional = userRepository.findUserByUsername(username);
+        User originalUser = checkUserExists(userOptional);
 
         if (patchUserDTO.getUsername() != null) {
             originalUser.setUsername(patchUserDTO.getUsername());
