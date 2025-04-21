@@ -16,7 +16,6 @@ public class Activity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long activityId;
 
-
     @ManyToOne
     @JoinColumn(name = "itinerary_id", nullable = false)
     @JsonBackReference(value="itinerary-activities")
