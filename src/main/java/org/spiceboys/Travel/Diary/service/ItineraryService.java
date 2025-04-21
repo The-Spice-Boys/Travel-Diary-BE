@@ -9,7 +9,9 @@ import org.spiceboys.Travel.Diary.repository.ItineraryRepository;
 import org.spiceboys.Travel.Diary.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -56,6 +58,27 @@ public class ItineraryService {
 
     public List<Itinerary> getAllItineraries() {
         return itineraryRepository.findAll();
+    }
+
+    public Itinerary updateItinerary(Long id, Map<String, Object> updates) {
+        Itinerary itinerary = itineraryRepository.findById(id)
+                .orElseThrow(() -> new ContentNotFoundException("Itinerary not found"));
+
+        updates.forEach((key, value) -> {
+            switch (key) {
+                case "itineraryTitle":
+                    itinerary.setItineraryTitle((String) value);
+                    break;
+                case "isPrivate":
+                    itinerary.setIsPrivate((Boolean) value);
+                    break;
+                case "modifiedAt":
+                    itinerary.setModifiedAt(Instant.parse((String) value));
+                    break;
+            }
+        });
+
+        return itineraryRepository.save(itinerary);
     }
 
     public boolean deleteItineraryById(Long itineraryId) {
