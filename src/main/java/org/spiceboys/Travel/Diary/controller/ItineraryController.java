@@ -1,5 +1,6 @@
 package org.spiceboys.Travel.Diary.controller;
 
+import org.spiceboys.Travel.Diary.dto.ItineraryDTO;
 import org.spiceboys.Travel.Diary.exception.ItineraryNotFoundException;
 import org.spiceboys.Travel.Diary.model.Itinerary;
 import org.spiceboys.Travel.Diary.service.ItineraryService;
@@ -20,60 +21,42 @@ public class ItineraryController {
         this.itineraryService = itineraryService;
     }
 
-    @PostMapping("/itineraries")
-    public ResponseEntity<Itinerary> createItinerary(@RequestBody Itinerary itinerary) {
-        Itinerary createdItinerary = itineraryService.createItinerary(itinerary);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdItinerary);
+    @GetMapping("/users/username/{username}/itineraries")
+    public ResponseEntity<List<ItineraryDTO>> getItinerariesByUsername(@PathVariable String username) {
+        List<ItineraryDTO> itineraries = itineraryService.getItinerariesByUsername(username);
+        return ResponseEntity.status(HttpStatus.OK).body(itineraries);
     }
 
-    @GetMapping("/itineraries")
-    public ResponseEntity<List<Itinerary>> getAllItineraries() {
-        List<Itinerary> allItineraries = itineraryService.getAllItineraries();
-        return new ResponseEntity<>(allItineraries, HttpStatus.OK);
-    }
-
-    @GetMapping("/itineraries/{itinerayId}")
-    public ResponseEntity<Itinerary> getItineraryById(@PathVariable Long itinerayId) {
-        Itinerary itinerary = itineraryService.getItineraryById(itinerayId);
-        if (itinerary != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(itinerary);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }
-
-    @GetMapping("/users/{username}/itineraries")
-    public ResponseEntity<List<Itinerary>> getItinerariesByUsername(@PathVariable String username) {
-        List<Itinerary> itineraries = itineraryService.getItinerariesByUsername(username);
+    @GetMapping("/users/userId/{userId}/itineraries")
+    public ResponseEntity<List<ItineraryDTO>> getItinerariesByUserId(@PathVariable Long userId) {
+        List<ItineraryDTO> itineraries = itineraryService.getItinerariesByUserId(userId);
         return ResponseEntity.status(HttpStatus.OK).body(itineraries);
     }
 
     @GetMapping("/countries/{countryName}/itineraries")
-    public ResponseEntity<List<Itinerary>> getItinerariesByCountryName(@PathVariable String countryName) {
-        List<Itinerary> itineraries = itineraryService.getItinerariesByCountryName(countryName);
+    public ResponseEntity<List<ItineraryDTO>> getItinerariesByCountryName(@PathVariable String countryName) {
+        List<ItineraryDTO> itineraries = itineraryService.getItinerariesByCountryName(countryName);
         return ResponseEntity.status(HttpStatus.OK).body(itineraries);
     }
 
+    @PostMapping("/itineraries")
+    public ResponseEntity<ItineraryDTO> createItinerary(@RequestBody Itinerary itinerary) {
+        ItineraryDTO createdItinerary = itineraryService.createItinerary(itinerary);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdItinerary);
+    }
+
     @PatchMapping("/itineraries/{itineraryId}")
-    public ResponseEntity<Itinerary> updateItinerary(
+    public ResponseEntity<ItineraryDTO> updateItinerary(
             @PathVariable Long itineraryId,
             @RequestBody Map<String, Object> updatedFields) {
-        try {
-            Itinerary updatedItinerary = itineraryService.updateItinerary(itineraryId, updatedFields);
-            return ResponseEntity.status(HttpStatus.OK).body(updatedItinerary);
-        } catch (ItineraryNotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+        ItineraryDTO updatedItinerary = itineraryService.updateItinerary(itineraryId, updatedFields);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedItinerary);
     }
 
     @DeleteMapping("/itineraries/{itineraryId}")
     public ResponseEntity<String> deleteItinerary(@PathVariable Long itineraryId) {
-        boolean isItinerayDeleted = itineraryService.deleteItineraryById(itineraryId);
-        if (isItinerayDeleted) {
-            return ResponseEntity.status(HttpStatus.OK).body("Itinerary deleted successfully");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Itinerary not found");
-        }
+        itineraryService.deleteItineraryById(itineraryId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Itinerary deleted successfully");
     }
 }
 
