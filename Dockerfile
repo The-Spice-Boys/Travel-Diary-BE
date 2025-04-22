@@ -1,5 +1,7 @@
-# Use a Maven base image to build the app
-FROM maven:3.8.6-openjdk-21-slim as build
+
+
+# Use Maven with OpenJDK 17 (more stable) to build the app
+FROM maven:3.8.6-openjdk-17-slim as build
 
 WORKDIR /app
 
@@ -10,12 +12,12 @@ COPY src ./src
 # Build the JAR file (this will put it in target/)
 RUN mvn clean package -DskipTests
 
-# Now we’ll use a smaller JDK 21 image to run the app
+# Now use a smaller OpenJDK 21 image to run the app
 FROM eclipse-temurin:21-jdk-alpine
 
 WORKDIR /app
 
-# Copy the built JAR from the previous build stage
+# Copy the built JAR from the build stage
 COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
