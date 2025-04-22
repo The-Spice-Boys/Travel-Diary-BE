@@ -52,6 +52,7 @@ public class Itinerary {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @JsonManagedReference(value="favourite-itinerary-ref")
     private List<Favourite> favourites;
 
 
