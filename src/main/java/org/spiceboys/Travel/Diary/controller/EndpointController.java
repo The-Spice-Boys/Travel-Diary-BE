@@ -20,7 +20,7 @@ public class EndpointController {
         response.put("version", "1.0");
         return response;
     }
-
+//s
     @GetMapping("/api")
     public ResponseEntity<String> getApiDocs() throws IOException {
         InputStream endpointsManual = getClass().getResourceAsStream("/endpoints.json");

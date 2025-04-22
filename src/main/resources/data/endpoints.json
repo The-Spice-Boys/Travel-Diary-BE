@@ -80,7 +80,7 @@
   },
 
   "PATCH /api/users": {
-    "description": "Restricted operation, only available to authorized logged in user can modify their own details",
+    "description": "Restricted operations, only available to authorized logged in user can modify their own details",
     "queries": [],
     "exampleResponse": {
       "authorized": {
