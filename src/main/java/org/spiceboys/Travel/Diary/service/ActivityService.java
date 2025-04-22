@@ -65,4 +65,14 @@ public class ActivityService {
         });
         return activityRepository.save(activity);
     }
+
+    public Activity getActivityEntityById(Long activityId) {
+        Optional<Activity> activity = activityRepository.findById(activityId);
+        if (activity.isPresent()) {
+            return activity.get();
+        }
+        else {
+            throw new ContentNotFoundException("Activity not found");
+        }
+    }
 }

@@ -18,4 +18,18 @@ public class CloudinaryService {
     public String uploadImage(MultipartFile file) throws IOException {
         return cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("secure_url").toString();
     }
+
+    public void deleteImage(String imgUrl) throws IOException {
+        int lastSlash = imgUrl.lastIndexOf("/") + 1;
+        int lastDot = imgUrl.lastIndexOf(".");
+        String filename;
+
+        if (lastDot > lastSlash) {
+            filename = imgUrl.substring(lastSlash, lastDot);
+        } else {
+            filename = imgUrl.substring(lastSlash);
+        }
+
+        cloudinary.uploader().destroy(filename, ObjectUtils.emptyMap());
+    }
 }
