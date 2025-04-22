@@ -47,9 +47,10 @@ public class ActivityService {
         });
         return activityRepository.save(activity);
     }
+  
     public void deleteActivityByActivityId(Long activityId) {
         Activity activity = activityRepository.findById(activityId)
                 .orElseThrow(() -> new ContentNotFoundException("Activity with ID " + activityId + " not found"));
-        activityRepository.delete(activity);
+        activityRepository.delete(activity)
     }
 }

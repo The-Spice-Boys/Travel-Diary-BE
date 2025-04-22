@@ -11,9 +11,10 @@ public class Favourite {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer favouriteId;
+    private Long favouriteId;
 
     @ManyToOne
+    @JsonBackReference(value="favourite-itinerary-ref")
     @JoinColumn(name = "itinerary_id")
     private Itinerary itinerary;
 
@@ -29,11 +30,11 @@ public class Favourite {
 
     public Favourite() {}
 
-    public Integer getFavouriteId() {
+    public Long getFavouriteId() {
         return favouriteId;
     }
 
-    public void setFavouriteId(Integer favouriteId) {
+    public void setFavouriteId(Long favouriteId) {
         this.favouriteId = favouriteId;
     }
 

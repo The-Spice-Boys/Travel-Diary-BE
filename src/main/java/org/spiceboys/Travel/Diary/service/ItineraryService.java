@@ -1,5 +1,8 @@
 package org.spiceboys.Travel.Diary.service;
 
+import org.spiceboys.Travel.Diary.dto.ItineraryDTO;
+import org.spiceboys.Travel.Diary.dto.PrivateItineraryDTO;
+import org.spiceboys.Travel.Diary.dto.PublicItineraryDTO;
 import org.spiceboys.Travel.Diary.exception.ContentNotFoundException;
 import org.spiceboys.Travel.Diary.model.Country;
 import org.spiceboys.Travel.Diary.model.Itinerary;
@@ -26,43 +29,32 @@ public class ItineraryService {
         this.countryRepository = countryRepository;
     }
 
-    public Itinerary createItinerary(Itinerary itinerary) {
-        return itineraryRepository.save(itinerary);
+    public ItineraryDTO createItinerary(Itinerary itinerary) {
+        Itinerary createdItinerary = itineraryRepository.save(itinerary);
+        return createItineraryDTO(createdItinerary);
     }
 
-    public List<Itinerary> getItinerariesByUsername(String username) {
-       Optional<User> optionalUser = userRepository.findUserByUsername(username);
-        if (optionalUser.isEmpty()) {
-            throw new ContentNotFoundException("User not found");
-        }
-        User user = optionalUser.get();
-       return itineraryRepository.findByUser(user);
+    public List<ItineraryDTO> getItinerariesByUsername(String username) {
+       User user = userRepository.findUserByUsername(username)
+               .orElseThrow(() -> new ContentNotFoundException("User with username " + username + " not found"));
+       return createDTOList(itineraryRepository.findByUser(user));
     }
 
-    public Itinerary getItineraryById(Long itineraryId) {
-        Optional<Itinerary> optionalItinerary = itineraryRepository.findById(itineraryId);
-        if (optionalItinerary.isEmpty()) {
-            throw new ContentNotFoundException("Itinerary not found");
-        }
-        return optionalItinerary.get();
+    public List<ItineraryDTO> getItinerariesByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ContentNotFoundException("User with ID " + userId + " not found"));
+        return createDTOList(itineraryRepository.findByUser(user));
     }
 
-    public List<Itinerary> getItinerariesByCountryName(String countryName) {
-        Optional<Country> optionalCountry = countryRepository.findCountryByCountryName(countryName);
-        if (optionalCountry.isEmpty()){
-            throw new ContentNotFoundException("Country not found");
-        }
-        Country country = optionalCountry.get();
-        return itineraryRepository.findByCountry(country);
+    public List<ItineraryDTO> getItinerariesByCountryName(String countryName) {
+        Country country = countryRepository.findCountryByCountryName(countryName)
+                .orElseThrow(() -> new ContentNotFoundException("Country with name " + countryName + " not found"));
+        return createDTOList( itineraryRepository.findByCountry(country));
     }
 
-    public List<Itinerary> getAllItineraries() {
-        return itineraryRepository.findAll();
-    }
-
-    public Itinerary updateItinerary(Long id, Map<String, Object> updates) {
+    public ItineraryDTO updateItinerary(Long id, Map<String, Object> updates) {
         Itinerary itinerary = itineraryRepository.findById(id)
-                .orElseThrow(() -> new ContentNotFoundException("Itinerary not found"));
+                .orElseThrow(() -> new ContentNotFoundException("Itinerary with ID " + id + " not found"));
 
         updates.forEach((key, value) -> {
             switch (key) {
@@ -78,16 +70,27 @@ public class ItineraryService {
             }
         });
 
-        return itineraryRepository.save(itinerary);
+        Itinerary updatedItinerary = itineraryRepository.save(itinerary);
+        return createItineraryDTO(updatedItinerary);
     }
 
-    public boolean deleteItineraryById(Long itineraryId) {
-        Optional<Itinerary> optionalItinerary = itineraryRepository.findById(itineraryId);
-        if (optionalItinerary.isPresent()) {
-            itineraryRepository.deleteById(itineraryId);
-            return true;
-        } else {
-            return false;
-        }
+    public void deleteItineraryById(Long itineraryId) {
+        Itinerary itinerary = itineraryRepository.findById(itineraryId)
+                .orElseThrow(() -> new ContentNotFoundException("Itinerary with ID " + itineraryId + " not found"));
+        itineraryRepository.delete(itinerary);
+    }
+
+    private List<ItineraryDTO> createDTOList(List<Itinerary> itineraries) {
+        return itineraries.stream().map(this::createItineraryDTO).toList();
+    }
+
+    private ItineraryDTO createItineraryDTO(Itinerary itinerary) {
+        return new PublicItineraryDTO(
+                itinerary.getItineraryId(),
+                itinerary.getItineraryTitle(),
+                itinerary.getCountry().getCountryName(),
+                itinerary.getModifiedAt(),
+                itinerary.getIsPrivate()
+        );
     }
 }
