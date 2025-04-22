@@ -1,11 +1,12 @@
 package org.spiceboys.Travel.Diary.controller;
 
-import org.spiceboys.Travel.Diary.dto.PatchUserDTO;
 import org.spiceboys.Travel.Diary.dto.UserDTO;
 import org.spiceboys.Travel.Diary.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -29,8 +30,9 @@ public class UserController {
     }
 
     @PatchMapping("/userId/{userId}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long userId, @RequestBody PatchUserDTO patchUserDTO) {
-        UserDTO updatedUser = userService.updateUser(userId, patchUserDTO);
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long userId,
+                                              @RequestBody Map<String, Object> updatedFields) {
+        UserDTO updatedUser = userService.updateUser(userId, updatedFields);
         return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
     }
 }

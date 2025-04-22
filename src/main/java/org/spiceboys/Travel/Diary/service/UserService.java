@@ -5,7 +5,7 @@ import org.spiceboys.Travel.Diary.exception.ContentNotFoundException;
 import org.spiceboys.Travel.Diary.model.User;
 import org.spiceboys.Travel.Diary.repository.UserRepository;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -16,62 +16,51 @@ public class UserService {
     }
 
     public UserDTO getUserByUsername(String username) {
-        Optional<User> userOptional = userRepository.findUserByUsername(username);
-        User user = checkUserExists(userOptional);
+        User user = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new ContentNotFoundException("User with username " + " not found"));
         return createUserDTO(user);
     }
 
     public UserDTO getUserByUserId(Long userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        User user = checkUserExists(userOptional);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ContentNotFoundException("User with id " + userId + " not found"));
         return createUserDTO(user);
     }
 
-    public UserDTO updateUser(Long userId, PatchUserDTO patchUserDTO) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        User originalUser = checkUserExists(userOptional);
+    public UserDTO updateUser(Long userId, Map<String, Object> updates) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ContentNotFoundException("User with id " + userId + " not found"));
 
-        if (patchUserDTO.getUsername() != null) {
-            originalUser.setUsername(patchUserDTO.getUsername());
-        }
+        updates.forEach((key, value) -> {
+            switch (key) {
+                case "username":
+                    user.setUsername((String) value);
+                    break;
+                case "firstName":
+                    user.setFirstName((String) value);
+                    break;
+                case "lastName":
+                    user.setLastName((String) value);
+                    break;
+                case "email":
+                    user.setEmail((String) value);
+                    break;
+                case "password":
+                    user.setPassword((String) value);
+                    break;
+                case "bio":
+                    user.setBio((String) value);
+                    break;
+                case "profilePicUrl":
+                    user.setProfilePicUrl((String) value);
+                    break;
+                case "private":
+                    user.setIsPrivate(Boolean.parseBoolean((String) value));
+            }
+        });
 
-        if (patchUserDTO.getFirstName() != null) {
-            originalUser.setFirstName(patchUserDTO.getFirstName());
-        }
-
-        if (patchUserDTO.getLastName() != null) {
-            originalUser.setLastName(patchUserDTO.getLastName());
-        }
-
-        if (patchUserDTO.getEmail() != null) {
-            originalUser.setEmail(patchUserDTO.getEmail());
-        }
-
-        if (patchUserDTO.getPassword() != null) {
-            originalUser.setPassword(patchUserDTO.getPassword());
-        }
-
-        if (patchUserDTO.getBio() != null) {
-            originalUser.setBio(patchUserDTO.getBio());
-        }
-
-        if (patchUserDTO.getProfilePicUrl() != null) {
-            originalUser.setProfilePicUrl(patchUserDTO.getProfilePicUrl());
-        }
-
-        if (patchUserDTO.getPrivate() != null) {
-            originalUser.setIsPrivate(patchUserDTO.getPrivate());
-        }
-
-        User updatedUser = userRepository.save(originalUser);
+        User updatedUser = userRepository.save(user);
         return createAuthorisedUserDTO(updatedUser);
-    }
-
-    private User checkUserExists(Optional<User> userOptional) {
-        if (userOptional.isEmpty()) {
-            throw new ContentNotFoundException("User not found");
-        }
-        return userOptional.get();
     }
 
     private UserDTO createUserDTO(User user) {
