@@ -1,7 +1,7 @@
 
 
 # Use Maven with OpenJDK 17 (more stable) to build the app
-FROM maven:3.8.6-openjdk-17-slim as build
+FROM maven:3.9.3-eclipse-temurin-17 AS build
 
 WORKDIR /app
 
