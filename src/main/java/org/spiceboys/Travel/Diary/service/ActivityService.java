@@ -1,18 +1,15 @@
 package org.spiceboys.Travel.Diary.service;
 
 import org.spiceboys.Travel.Diary.exception.ContentNotFoundException;
-import org.spiceboys.Travel.Diary.exception.ItineraryNotFoundException;
-import org.spiceboys.Travel.Diary.exception.ResourceNotFoundException;
 import org.spiceboys.Travel.Diary.model.Activity;
 import org.spiceboys.Travel.Diary.model.Itinerary;
 import org.spiceboys.Travel.Diary.repository.ActivityRepository;
 import org.spiceboys.Travel.Diary.repository.ItineraryRepository;
+
 import org.springframework.stereotype.Service;
 
-import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class ActivityService {
@@ -25,28 +22,13 @@ public class ActivityService {
     }
 
     public List<Activity> getActivitiesByItineraryId(Long itineraryId) {
-        Itinerary optionalItinerary = itineraryRepository.findById(itineraryId)
+        Itinerary itinerary = itineraryRepository.findById(itineraryId)
                 .orElseThrow(() -> new ContentNotFoundException("Itinerary with ID " + itineraryId + " not found"));
-
-        return activityRepository.findByItinerary(optionalItinerary);
+        return activityRepository.findByItinerary(itinerary);
     }
 
     public Activity createActivity(Activity activity) {
         return activityRepository.save(activity);
-    }
-
-    public List<Activity> getAllActivities() {
-        return activityRepository.findAll();
-    }
-
-    public boolean deleteActivityByActivityId(Long activityId) {
-        Optional<Activity> optionalActivity = activityRepository.findById(activityId);
-        if (optionalActivity.isPresent()) {
-            activityRepository.deleteById(activityId);
-            return true;
-        } else {
-            return false;
-        }
     }
 
     public Activity updateActivity(Long activityId, Map<String, Object> updates) {
@@ -64,5 +46,10 @@ public class ActivityService {
             }
         });
         return activityRepository.save(activity);
+    }
+    public void deleteActivityByActivityId(Long activityId) {
+        Activity activity = activityRepository.findById(activityId)
+                .orElseThrow(() -> new ContentNotFoundException("Activity with ID " + activityId + " not found"));
+        activityRepository.delete(activity);
     }
 }
