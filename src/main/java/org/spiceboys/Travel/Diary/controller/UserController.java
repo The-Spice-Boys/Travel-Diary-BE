@@ -1,14 +1,11 @@
 package org.spiceboys.Travel.Diary.controller;
 
+import org.spiceboys.Travel.Diary.dto.PatchUserDTO;
 import org.spiceboys.Travel.Diary.dto.UserDTO;
 import org.spiceboys.Travel.Diary.service.UserService;
-import org.spiceboys.Travel.Diary.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.Map;
-import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/users")
@@ -19,17 +16,21 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody User user) {
-        User createdUser = userService.createUser(user);
-        UserDTO createdUserDTO = new UserDTO(createdUser.getUserId(), createdUser.getUsername());
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDTO);
-    }
-
     @GetMapping("/username/{username}")
     public ResponseEntity<UserDTO> fetchUserByUsername(@PathVariable String username) {
-        User fetchedUser = userService.getUserByUsername(username);
-        UserDTO fetchedUserDTO = new UserDTO(fetchedUser.getUserId(), fetchedUser.getUsername());
-        return ResponseEntity.status(HttpStatus.OK).body(fetchedUserDTO);
+        UserDTO fetchedUser = userService.getUserByUsername(username);
+        return ResponseEntity.status(HttpStatus.OK).body(fetchedUser);
+    }
+
+    @GetMapping("/userId/{userId}")
+    public ResponseEntity<UserDTO> fetchUserByUserId(@PathVariable Long userId) {
+        UserDTO fetchedUser = userService.getUserByUserId(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(fetchedUser);
+    }
+
+    @PatchMapping("/userId/{userId}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long userId, @RequestBody PatchUserDTO patchUserDTO) {
+        UserDTO updatedUser = userService.updateUser(userId, patchUserDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
     }
 }

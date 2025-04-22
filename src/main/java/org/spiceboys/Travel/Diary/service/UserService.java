@@ -1,10 +1,10 @@
 package org.spiceboys.Travel.Diary.service;
 
+import org.spiceboys.Travel.Diary.dto.*;
 import org.spiceboys.Travel.Diary.exception.ContentNotFoundException;
 import org.spiceboys.Travel.Diary.model.User;
 import org.spiceboys.Travel.Diary.repository.UserRepository;
 import org.springframework.stereotype.Service;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,26 +15,91 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User createUser(User user) {
-        return userRepository.save(user);
-    }
-
-    public User getUserByUsername(String username) {
+    public UserDTO getUserByUsername(String username) {
         Optional<User> userOptional = userRepository.findUserByUsername(username);
-        if (userOptional.isPresent()) {
-            return userOptional.get();
-        } else {
-      throw new ContentNotFoundException("User not found");
-        }
+        User user = checkUserExists(userOptional);
+        return createUserDTO(user);
     }
 
-//    public User updateUserByUsername(String username, User user) {
-//        Optional<User> userOptional = userRepository.findUserByUsername(username);
-//        if (userOptional.isPresent()) {
-//            userOptional.get();
-//        } else {
-//            throw new ContentNotFoundException("User not found");
-//        }
-//    }
+    public UserDTO getUserByUserId(Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        User user = checkUserExists(userOptional);
+        return createUserDTO(user);
+    }
+
+    public UserDTO updateUser(Long userId, PatchUserDTO patchUserDTO) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        User originalUser = checkUserExists(userOptional);
+
+        if (patchUserDTO.getUsername() != null) {
+            originalUser.setUsername(patchUserDTO.getUsername());
+        }
+
+        if (patchUserDTO.getFirstName() != null) {
+            originalUser.setFirstName(patchUserDTO.getFirstName());
+        }
+
+        if (patchUserDTO.getLastName() != null) {
+            originalUser.setLastName(patchUserDTO.getLastName());
+        }
+
+        if (patchUserDTO.getEmail() != null) {
+            originalUser.setEmail(patchUserDTO.getEmail());
+        }
+
+        if (patchUserDTO.getPassword() != null) {
+            originalUser.setPassword(patchUserDTO.getPassword());
+        }
+
+        if (patchUserDTO.getBio() != null) {
+            originalUser.setBio(patchUserDTO.getBio());
+        }
+
+        if (patchUserDTO.getProfilePicUrl() != null) {
+            originalUser.setProfilePicUrl(patchUserDTO.getProfilePicUrl());
+        }
+
+        if (patchUserDTO.getPrivate() != null) {
+            originalUser.setIsPrivate(patchUserDTO.getPrivate());
+        }
+
+        User updatedUser = userRepository.save(originalUser);
+        return createAuthorisedUserDTO(updatedUser);
+    }
+
+    private User checkUserExists(Optional<User> userOptional) {
+        if (userOptional.isEmpty()) {
+            throw new ContentNotFoundException("User not found");
+        }
+        return userOptional.get();
+    }
+
+    private UserDTO createUserDTO(User user) {
+        return user.getIsPrivate()
+                ? new PrivateUserDTO(
+                    user.getUserId(),
+                    user.getUsername(),
+                    true)
+                : new PublicUserDTO(
+                    user.getUserId(),
+                    user.getUsername(),
+                    user.getBio(),
+                    user.getProfilePicUrl(),
+                    user.getIsPrivate());
+    }
+
+    private UserDTO createAuthorisedUserDTO(User user) {
+        return new AuthorisedUserDTO(
+                user.getUserId(),
+                user.getUsername(),
+                user.getBio(),
+                user.getProfilePicUrl(),
+                user.getIsPrivate(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail()
+        );
+    }
+
 }
 

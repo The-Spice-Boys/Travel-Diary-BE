@@ -1,13 +1,16 @@
 package org.spiceboys.Travel.Diary.dto;
 
 public class UserDTO {
-    private Long userId;
+    Long userId;
+    String username;
+    Boolean isPrivate;
 
-    private String username;
-
-    public UserDTO(Long userId, String username) {
+    public UserDTO(Long userId,
+                   String username,
+                   Boolean isPrivate) {
         this.userId = userId;
         this.username = username;
+        this.isPrivate = isPrivate;
     }
 
     public Long getUserId() {
@@ -24,5 +27,13 @@ public class UserDTO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Boolean getPrivate() {
+        return isPrivate;
+    }
+
+    public void setPrivate(Boolean aPrivate) {
+        isPrivate = aPrivate;
     }
 }
