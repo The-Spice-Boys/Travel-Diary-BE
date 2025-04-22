@@ -1,26 +1,27 @@
-
-
-# Use Maven with OpenJDK 17 (more stable) to build the app
-FROM maven:3.9.3-eclipse-temurin-17 AS build
+# Use JDK 21 image
+FROM eclipse-temurin:21-jdk as build
 
 WORKDIR /app
 
-# Copy the pom.xml and the source code
+# Install Maven manually
+RUN apt-get update && apt-get install -y maven
+
+# Copy project files
 COPY pom.xml .
 COPY src ./src
 
-# Build the JAR file (this will put it in target/)
+# Build the application
 RUN mvn clean package -DskipTests
 
-# Now use a smaller OpenJDK 21 image to run the app
+# Final runtime image (slimmed down)
 FROM eclipse-temurin:21-jdk-alpine
 
 WORKDIR /app
 
-# Copy the built JAR from the build stage
+# Copy the JAR from the builder image
 COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
 
-# Run the Spring Boot app
+# Run the app
 ENTRYPOINT ["java", "-jar", "app.jar"]
