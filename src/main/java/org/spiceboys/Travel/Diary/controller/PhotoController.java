@@ -1,22 +1,14 @@
 package org.spiceboys.Travel.Diary.controller;
 
 import org.spiceboys.Travel.Diary.dto.PhotoDTO;
-import org.spiceboys.Travel.Diary.model.Activity;
 import org.spiceboys.Travel.Diary.model.Photo;
-import org.spiceboys.Travel.Diary.model.User;
-import org.spiceboys.Travel.Diary.repository.PhotoRepository;
-import org.spiceboys.Travel.Diary.repository.UserRepository;
-import org.spiceboys.Travel.Diary.service.ActivityService;
-import org.spiceboys.Travel.Diary.service.ItineraryService;
 import org.spiceboys.Travel.Diary.service.PhotoService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
@@ -24,12 +16,9 @@ import java.util.Map;
 @RequestMapping("/api")
 public class PhotoController {
     private final PhotoService photoService;
-    private final ActivityService activityService;
 
-    public PhotoController(PhotoService photoService,
-                           ActivityService activityService) {
+    public PhotoController(PhotoService photoService) {
         this.photoService = photoService;
-        this.activityService = activityService;
     }
 
     @GetMapping("/activity/{activityId}/photos")
@@ -47,18 +36,12 @@ public class PhotoController {
     }
 
     @PostMapping("/photos")
-    public ResponseEntity<Object> uploadPhoto(@RequestParam(value = "caption", required = false) String caption,
+    public ResponseEntity<PhotoDTO> uploadPhoto(@RequestParam(value = "caption", required = false) String caption,
                                               @RequestParam MultipartFile file,
                                               @RequestParam Long activityId) throws IOException {
-
-        Activity activity = activityService.getActivityEntityById(activityId);
-        Photo photo = new Photo();
-        photo.setCaption(caption);
-        photo.setActivity(activity);
-        photo.setModifiedAt(Instant.now());
-
+        PhotoDTO photo = photoService.createPhoto(file, caption, activityId);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(photoService.createPhoto(photo, file));
+                .body(photo);
     }
 
     @DeleteMapping("/photos/{photoId}")

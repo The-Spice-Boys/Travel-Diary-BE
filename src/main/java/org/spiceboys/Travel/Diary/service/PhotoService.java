@@ -27,7 +27,7 @@ public class PhotoService {
     }
 
     public List<Photo> getPhotosByActivityId(Long activityId){
-        Optional<Activity> optionalActivity = activityRepository.findByActivityId(activityId);
+        Optional<Activity> optionalActivity = activityRepository.findById(activityId);
         if (optionalActivity.isEmpty()) {
             throw new ContentNotFoundException("Activity not found");
         }
@@ -56,12 +56,20 @@ public class PhotoService {
         }
     }
 
-    public PhotoDTO createPhoto(Photo photo, MultipartFile file) throws IOException {
+    public PhotoDTO createPhoto(MultipartFile file,
+                                String caption,
+                                Long activityId) throws IOException {
         String photoUrl = cloudinaryService.uploadImage(file);
+        Activity activity = activityRepository.findById(activityId)
+                .orElseThrow(() -> new ContentNotFoundException("Activity not found"));
+
+        Photo photo = new Photo();
+        photo.setCaption(caption);
+        photo.setActivity(activity);
+        photo.setModifiedAt(Instant.now());
         photo.setImgUrl(photoUrl);
         photoRepository.save(photo);
-        PhotoDTO photoDTO = new PhotoDTO(photo);
-        return photoDTO;
+        return new PhotoDTO(photo);
     }
 
     public void deletePhotoById(Long photoId) throws IOException {
@@ -84,8 +92,4 @@ public class PhotoService {
             throw new ContentNotFoundException("Photo not found");
         }
     }
-
-
-
 }
-
