@@ -8,8 +8,6 @@ import org.spiceboys.Travel.Diary.repository.NoteRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-
 @Service
 public class NoteService {
     private final NoteRepository noteRepository;
@@ -21,16 +19,9 @@ public class NoteService {
     }
 
     public List<Note> getNotesByActivityId(Long activityId) {
-        Optional<Activity> activityOptional = activityRepository.findById(activityId);
-        Activity activity = checkActivityExists(activityOptional);
+        Activity activity = activityRepository.findById(activityId)
+                .orElseThrow(() -> new ContentNotFoundException("Activity with ID " + activityId + " not found"));
         return noteRepository.getAllByActivity(activity);
-    }
-
-    private Activity checkActivityExists(Optional<Activity> activity) {
-        if (activity.isEmpty()) {
-            throw new ContentNotFoundException("Activity does not exist");
-        }
-        return activity.get();
     }
 
     public Note createNote(Note note) {
@@ -38,23 +29,16 @@ public class NoteService {
     }
 
     public Note updateNote(Long noteId, Note note) {
-        Optional<Note> noteOptional = noteRepository.findById(noteId);
-        Note originalNote = checkNoteExists(noteOptional);
+        Note originalNote = noteRepository.findById(noteId)
+                .orElseThrow(() -> new ContentNotFoundException("Note with ID " + noteId + " not found"));
         originalNote.setText(note.getText());
         originalNote.setModifiedAt(note.getModifiedAt());
         return noteRepository.save(originalNote);
     }
 
     public void deleteNote(Long noteId) {
-        Optional<Note> noteOptional = noteRepository.findById(noteId);
-        Note note = checkNoteExists(noteOptional);
+        Note note = noteRepository.findById(noteId)
+                .orElseThrow(() -> new ContentNotFoundException("Note with ID " + noteId + " not found"));
         noteRepository.delete(note);
-    }
-
-    public Note checkNoteExists(Optional<Note> optional) {
-        if (optional.isEmpty()) {
-            throw new ContentNotFoundException("Note does not exist");
-        }
-        return optional.get();
     }
 }
