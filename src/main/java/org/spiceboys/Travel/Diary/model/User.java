@@ -5,9 +5,7 @@ import jakarta.persistence.*;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.URL;
-import org.spiceboys.Travel.Diary.model.Itinerary;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -152,5 +150,13 @@ public class User {
 
     public void setItineraries(List<Itinerary> itineraries) {
         this.itineraries = itineraries;
+    }
+
+    public List<Favourite> getFavourites() {
+        return favourites;
+    }
+
+    public void setFavourites(List<Favourite> favourites) {
+        this.favourites = favourites;
     }
 }
