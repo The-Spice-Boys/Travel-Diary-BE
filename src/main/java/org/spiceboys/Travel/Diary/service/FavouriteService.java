@@ -50,4 +50,10 @@ public class FavouriteService {
                 itineraryDTO
         );
     }
+
+    public void deleteFavouriteByFavouriteId(Long favouriteId) {
+        Favourite favourite = favouriteRepository.findById(favouriteId)
+                .orElseThrow(() -> new ContentNotFoundException("Favourite with id " + favouriteId + " not found"));
+        favouriteRepository.delete(favourite);
+    }
 }

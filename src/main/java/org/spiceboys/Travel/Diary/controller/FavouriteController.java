@@ -34,4 +34,11 @@ public class FavouriteController {
         FavouriteDTO savedFavourite = favouriteService.saveFavourite(favourite);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedFavourite);
     }
+
+    @DeleteMapping("/api/favourites/{favouriteId}")
+    public ResponseEntity<String> deleteActivity(@PathVariable Long favouriteId) {
+        favouriteService.deleteFavouriteByFavouriteId(favouriteId);
+        return ResponseEntity.status(HttpStatus.OK).body("Favourite deleted successfully");
+    }
+
 }
