@@ -36,9 +36,8 @@ public class FavouriteService {
         return favourites.stream().map(this::createFavouriteDTO).toList();
     }
 
-    public FavouriteDTO saveFavourite(Favourite favourite) {
-        Favourite newFavourite = favouriteRepository.save(favourite);
-        return createFavouriteDTO(newFavourite);
+    public Favourite saveFavourite(Favourite favourite) {
+        return favouriteRepository.save(favourite);
     }
 
     private FavouriteDTO createFavouriteDTO(Favourite favourite) {

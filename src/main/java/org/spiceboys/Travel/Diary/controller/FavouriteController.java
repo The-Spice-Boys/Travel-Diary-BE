@@ -30,8 +30,8 @@ public class FavouriteController {
     }
 
     @PostMapping("/api/favourites")
-    public ResponseEntity<FavouriteDTO> saveFavourite(@RequestBody Favourite favourite) {
-        FavouriteDTO savedFavourite = favouriteService.saveFavourite(favourite);
+    public ResponseEntity<Favourite> saveFavourite(@RequestBody Favourite favourite) {
+        Favourite savedFavourite = favouriteService.saveFavourite(favourite);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedFavourite);
     }
 
