@@ -1,7 +1,6 @@
 package org.spiceboys.Travel.Diary.service;
 
 import org.spiceboys.Travel.Diary.dto.ItineraryDTO;
-import org.spiceboys.Travel.Diary.dto.PrivateItineraryDTO;
 import org.spiceboys.Travel.Diary.dto.PublicItineraryDTO;
 import org.spiceboys.Travel.Diary.exception.ContentNotFoundException;
 import org.spiceboys.Travel.Diary.model.Country;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class ItineraryService {
@@ -90,7 +88,9 @@ public class ItineraryService {
                 itinerary.getItineraryTitle(),
                 itinerary.getCountry().getCountryName(),
                 itinerary.getModifiedAt(),
-                itinerary.getIsPrivate()
+                itinerary.getIsPrivate(),
+                itinerary.getUser().getUserId(),
+                itinerary.getUser().getUsername()
         );
     }
 }
