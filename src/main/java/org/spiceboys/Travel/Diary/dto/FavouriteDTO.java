@@ -1,14 +1,12 @@
 package org.spiceboys.Travel.Diary.dto;
 
-import org.spiceboys.Travel.Diary.model.Itinerary;
-
 public class FavouriteDTO {
     private Long favouriteId;
     private Long userId;
     private String username;
-    private Itinerary itinerary;
+    private ItineraryDTO itinerary;
 
-    public FavouriteDTO(Long favouriteId, Long userId, String username, Itinerary itinerary) {
+    public FavouriteDTO(Long favouriteId, Long userId, String username, ItineraryDTO itinerary) {
         this.favouriteId = favouriteId;
         this.userId = userId;
         this.username = username;
@@ -39,11 +37,11 @@ public class FavouriteDTO {
         this.username = username;
     }
 
-    public Itinerary getItinerary() {
+    public ItineraryDTO getItinerary() {
         return itinerary;
     }
 
-    public void setItinerary(Itinerary itinerary) {
+    public void setItinerary(ItineraryDTO itinerary) {
         this.itinerary = itinerary;
     }
 }

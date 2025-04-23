@@ -82,7 +82,7 @@ public class ItineraryService {
         return itineraries.stream().map(this::createItineraryDTO).toList();
     }
 
-    private ItineraryDTO createItineraryDTO(Itinerary itinerary) {
+    public ItineraryDTO createItineraryDTO(Itinerary itinerary) {
         return new PublicItineraryDTO(
                 itinerary.getItineraryId(),
                 itinerary.getItineraryTitle(),

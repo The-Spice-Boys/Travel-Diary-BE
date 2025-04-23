@@ -1,6 +1,7 @@
 package org.spiceboys.Travel.Diary.service;
 
 import org.spiceboys.Travel.Diary.dto.FavouriteDTO;
+import org.spiceboys.Travel.Diary.dto.ItineraryDTO;
 import org.spiceboys.Travel.Diary.exception.ContentNotFoundException;
 import org.spiceboys.Travel.Diary.model.Favourite;
 import org.spiceboys.Travel.Diary.model.User;
@@ -13,10 +14,12 @@ import java.util.List;
 public class FavouriteService {
     private final FavouriteRepository favouriteRepository;
     private final UserRepository userRepository;
+    private final ItineraryService itineraryService;
 
-    public FavouriteService(FavouriteRepository favouriteRepository, UserRepository userRepository) {
+    public FavouriteService(FavouriteRepository favouriteRepository, UserRepository userRepository, ItineraryService itineraryService) {
         this.favouriteRepository = favouriteRepository;
         this.userRepository = userRepository;
+        this.itineraryService = itineraryService;
     }
 
     public List<FavouriteDTO> getFavouritesByUsername(String username) {
@@ -39,11 +42,12 @@ public class FavouriteService {
     }
 
     private FavouriteDTO createFavouriteDTO(Favourite favourite) {
+        ItineraryDTO itineraryDTO = itineraryService.createItineraryDTO(favourite.getItinerary());
         return new FavouriteDTO(
                 favourite.getFavouriteId(),
                 favourite.getUser().getUserId(),
                 favourite.getUser().getUsername(),
-                favourite.getItinerary()
+                itineraryDTO
         );
     }
 }
