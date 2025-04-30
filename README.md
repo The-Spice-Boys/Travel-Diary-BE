@@ -24,6 +24,7 @@ This backend is built with **Java Spring Boot** and follows Object-Oriented Prog
 - **JPA (Hibernate)** (for database interaction)
 - **MySQL / PostgreSQL** (relational database)
 - **Maven** (dependency management)
+- **Cloudinary** (cloud storage & CDN for photos)
 
 ---
 
@@ -35,6 +36,21 @@ We chose **Java** and **Spring Boot** for several reasons:
 - ✅ **Strong ecosystem**: Spring Boot provides built-in solutions for security, database access, validation, and more.
 - ✅ **Type safety**: Compile-time checks in Java help catch errors early.
 - ✅ **Enterprise-grade**: Java and Spring Boot are proven technologies used by major companies for high-traffic applications.
+
+---
+
+## ☁️ Image Uploads with Cloudinary
+
+We use **Cloudinary** to store and serve user-uploaded photos. This offers:
+
+- ✅ **Cloud storage** (images don’t overload our backend server)
+- ✅ **Fast global delivery** through Cloudinary's CDN
+- ✅ **On-the-fly image transformations** (resize, crop, optimize)
+
+When a user uploads a photo through the `/api/photos` endpoint:
+1. The backend receives the image file.
+2. It uploads the image to **Cloudinary**.
+3. The backend stores only the **Cloudinary URL** and metadata (caption, modified date) in our database.
 
 ---
 
@@ -70,6 +86,36 @@ More detailed API docs (including request/response formats) are coming soon!
 
 ## 🚀 Getting Started (for Developers)
 
-1. **Clone the repo**:
+1. **Clone the repo**
    ```bash
    git clone https://github.com/your-org/travel-diary-backend.git](https://github.com/The-Spice-Boys/Travel-Diary-BE.git
+
+2. **Configure cloudinary for file uploads**
+   ```bash
+   @Configuration
+   public class CloudinaryConfig {
+
+    @Bean
+    public Cloudinary cloudinary(){
+        Map<String, Object> config = new HashMap<>();
+        config.put("cloud_name", "[insert cloud name]");
+        config.put("api_key", "[insert api key]");
+        config.put("api_secret", "[insert api secret]");
+        return new Cloudinary(config);
+    };
+   }
+   
+3. **Configure application properties file to connect to DB**
+   ```bash
+   spring.application.name=Travel Diary (back end)
+   spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
+   
+   spring.jpa.hibernate.ddl-auto=create-drop
+   spring.jpa.show-sql=true
+   spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+   spring.servlet.multipart.max-file-size=10MB
+   spring.servlet.multipart.max-request-size=10MB
+
+4. **Test api using post man or insomnia**
+   ```bash
+   http://localhost:8080/api
