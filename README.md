@@ -72,5 +72,4 @@ More detailed API docs (including request/response formats) are coming soon!
 
 1. **Clone the repo**:
    ```bash
-   git clone https://github.com/your-org/travel-diary-backend.git
-   cd travel-diary-backend
+   git clone https://github.com/your-org/travel-diary-backend.git](https://github.com/The-Spice-Boys/Travel-Diary-BE.git
